@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="mk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reservation of Events</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+          integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="../static/newEvents.css">
+
+</head>
+<body>
+
+<div class="container">
+    <!-- Search Form -->
+
+    <h1 class="text-center mb-4 bg-primary  bg-dark text-white rounded-pill px-7 py-2">Reservation of Events</h1>
+
+
+    <!-- Events Table -->
+    <div class="table-responsive">
+
+
+        <form th:method="POST" th:action="@{/events/searchEvent}" class="mb-5">
+            <h4 class="text-left mb-4">Search Event</h4>
+            <div class="form-row">
+                <div class="col-md-4">
+                    <input type="text" name="locationId" id="locationId" class="form-control" placeholder="Event Location" required>
+                </div>
+<!--                <div class="col-md-4">-->
+<!--                    <input type="number" name="rating" id="rating" class="form-control" placeholder="Min Rating" min="1" >-->
+<!--                </div>-->
+                <div class="col-md-4">
+                    <input type="submit" value="Search" class="btn btn-primary btn-block">
+                </div>
+            </div>
+
+            <!-- Search Results -->
+            <ul class="mt-4">
+                <li th:each="event : ${session.events}">
+                    <span th:text="${'Name: ' + event.name + ' Description: ' + event.description + ' Popularity: ' + event.popularityScore}"></span>
+                </li>
+            </ul>
+        </form>
+
+        <table class="table table-bordered table-hover table-striped">
+            <thead class="thead-dark">
+            <tr>
+
+                <th scope="col">Select</th>
+                <th scope="col">Event Name</th>
+                <th scope="col">Popularity</th>
+                <th scope="col">Description</th>
+                <th scope="col">Location</th>
+                <th scope="col">Actions</th>
+
+            </tr>
+            </thead>
+            <tbody>
+
+            <tr th:each="event : ${events}">
+
+                <!-- Radio button za selektiranje na nastan -->
+                <td>
+                    <input type="radio" name="eventName" th:value="${event.name}" form="bookingForm" required>
+                </td>
+                <!-- Prikazuvanje na ime na nastan -->
+                <td th:text="${event.name}"></td>
+                <td th:text="${event.popularityScore}"></td>
+                <td th:text="${event.description}"></td>
+                <td th:text="${event.location.name}"></td>
+
+                <td>
+
+                    <!-- button za brishenje -->
+                    <form th:method="POST" th:action="@{'/events/delete/' + ${event.id}}">
+                        <input type="hidden" name="_method" value="delete">
+                        <button type="submit" class="btn btn-sm btn-danger">Delete</button>
+                    </form>
+
+                    <!-- button za edit -->
+                    <th:block >
+                        <a class="btn btn-sm btn-info" th:href="@{/events/edit-event/{id}(id=${event.id})}">
+                            <i class="fa fa-edit"></i> Edit
+                        </a>
+                    </th:block>
+
+                    <th:block>
+                        <a class="btn btn-sm btn-warning" th:href="@{/events/details/{id} (id=${event.getId()})}">
+                            <i class="fa fa-edit"></i> Details
+                        </a>
+                    </th:block>
+
+                </td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Booking Form -->
+    <h4 class="mb-3">Reserve your tickets:</h4>
+    <form id="bookingForm" th:method="POST" th:action="@{/eventBooking}">
+        <div class="form-group">
+
+
+            <label for="numTickets">Number of tickets:</label>
+            <input type="number" name="numTickets" id="numTickets" class="form-control" required>
+
+        </div>
+        <!-- button za confirm rezervacija -->
+        <button type="submit" class="btn btn-success btn-block">Confirm Reservation</button>
+    </form>
+
+    <!-- button za dodavajne na nov nastan -->
+    <div class="row mt-4">
+        <div class="col-12">
+            <a href="/events/event/add" class="btn btn-dark btn-block">Add New Event</a>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/+/D/5/SVgf4T2l6e5zZ5T6Dz65nPf5F8go5vc//wW6z3lEXF0nmr1hkp/91gD" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-kJ6tP2rBzjD9j1nR2r8y5gGVX3AL8mpg+/pftGiTq04qPUSN1o6XgojszXl7gQ/5" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-hjV7s1D9QJgaO7g0jNfgTq2V//uA3jCH5ZzV4wX7g4xYReXhGsyvDPLQdPzndLgA" crossorigin="anonymous"></script>
+</body>
+</html>
