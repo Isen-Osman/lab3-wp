@@ -1,9 +1,11 @@
 package mk.finki.ukim.mk.wezba1.web.controller;
 
 import jakarta.servlet.http.HttpServletRequest;
+import mk.finki.ukim.mk.wezba1.model.Category;
 import mk.finki.ukim.mk.wezba1.model.Event;
 import mk.finki.ukim.mk.wezba1.model.EventBooking;
 import mk.finki.ukim.mk.wezba1.model.Location;
+import mk.finki.ukim.mk.wezba1.service.CategoryService;
 import mk.finki.ukim.mk.wezba1.service.EventBookingService;
 import mk.finki.ukim.mk.wezba1.service.EventService;
 import mk.finki.ukim.mk.wezba1.service.LocationService;
@@ -22,12 +24,15 @@ public class EventController {
     private final EventService eventService;
     private final LocationService locationService;
     private final EventBookingService eventBookingService;
-
+    private final CategoryService categoryService;
     // Конструктор кој ги иницијализира сервисите
-    public EventController(EventService eventService, LocationService locationService, EventBookingService eventBookingService) {
+
+
+    public EventController(EventService eventService, LocationService locationService, EventBookingService eventBookingService, CategoryService categoryService) {
         this.eventService = eventService;
         this.locationService = locationService;
         this.eventBookingService = eventBookingService;
+        this.categoryService = categoryService;
     }
 
     // TODO ALL EVENTS
@@ -62,6 +67,7 @@ public class EventController {
             //Gi dodavame site lokacii na formata edit
             model.addAttribute("locations", locationService.findAll());
             //prikaz na add-event stranata
+            model.addAttribute("categories",categoryService.findAll());
             return "add-event";
         }
         //prenasocuvanje ako nastanot ne e najden
@@ -81,7 +87,10 @@ public class EventController {
         model.addAttribute("locations", locationService.findAll());
         //gi dodava site nastani vo modelot
         model.addAttribute("events", eventService.listAll());
+
+        model.addAttribute("categories",categoryService.findAll());
         //ja prikazuva add-event stranata
+
         return "add-event";
     }
 
@@ -92,11 +101,13 @@ public class EventController {
                            @RequestParam String name,
                            @RequestParam String description,
                            @RequestParam Double popularity,
-                           @RequestParam Long locationId) {
+                           @RequestParam Long locationId,
+                           @RequestParam Long categoryId
+    ) {
         if (id != null) {
-            this.eventService.update(id, name, description, popularity, locationId);
+            this.eventService.update(id, name, description, popularity, locationId, categoryId);
         }else{
-            this.eventService.save(name, description, popularity, locationId);
+            this.eventService.save(name, description, popularity, locationId,categoryId);
         }
         return "redirect:/events";
     }

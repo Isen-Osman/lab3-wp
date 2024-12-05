@@ -9,5 +9,5 @@ public interface EventBookingService {
 
     EventBooking placeBooking(String eventName, String attendeeName, String attendeeAddress, long numberOfTickets);
 
-
+    Optional<EventBooking> findById(Long id);
 }

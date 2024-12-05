@@ -15,9 +15,9 @@ public interface EventService {
 
     void deleteById(long id);
 
-    Optional<Event> save(String name, String description, double popularityScore, Long locationid);
+    Optional<Event> save(String name, String description, double popularityScore, Long locationid,Long categoryid);
 
-    Optional<Event> update(Long id, String name, String description, double popularityScore, Long locationid);
+    Optional<Event> update(Long id, String name, String description, double popularityScore, Long locationid,Long categoryid);
 
     List<Event> findAllByLocation_Id(Long locationId);
 }

@@ -52,6 +52,8 @@
                 <th scope="col">Popularity</th>
                 <th scope="col">Description</th>
                 <th scope="col">Location</th>
+                <th scope="col">Category</th>
+
                 <th scope="col">Actions</th>
 
             </tr>
@@ -69,6 +71,8 @@
                 <td th:text="${event.popularityScore}"></td>
                 <td th:text="${event.description}"></td>
                 <td th:text="${event.location.name}"></td>
+                <td th:text="${event.category.name}"></td>
+
 
                 <td>
 
@@ -102,8 +106,6 @@
     <h4 class="mb-3">Reserve your tickets:</h4>
     <form id="bookingForm" th:method="POST" th:action="@{/eventBooking}">
         <div class="form-group">
-
-
             <label for="numTickets">Number of tickets:</label>
             <input type="number" name="numTickets" id="numTickets" class="form-control" required>
 

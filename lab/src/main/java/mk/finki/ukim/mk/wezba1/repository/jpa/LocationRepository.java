@@ -4,9 +4,11 @@ import mk.finki.ukim.mk.wezba1.model.Location;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository
+import java.util.Optional;
 
+@Repository
 public interface LocationRepository extends JpaRepository<Location, Long> {
 
+    public Optional<Location> findById(Long id);
 }
 

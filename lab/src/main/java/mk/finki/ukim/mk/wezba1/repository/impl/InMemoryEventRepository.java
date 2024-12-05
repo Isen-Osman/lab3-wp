@@ -1,6 +1,7 @@
 package mk.finki.ukim.mk.wezba1.repository.impl;
 
 import mk.finki.ukim.mk.wezba1.boostrap.DataHolder;
+import mk.finki.ukim.mk.wezba1.model.Category;
 import mk.finki.ukim.mk.wezba1.model.Event;
 import mk.finki.ukim.mk.wezba1.model.Location;
 import org.springframework.stereotype.Repository;
@@ -30,10 +31,10 @@ public class InMemoryEventRepository {
     public void deleteById(long id){
         DataHolder.eventList.removeIf(event -> event.getId() == id);
     }
-    public Optional<Event> saveOrUpdate(String name, String description, double popularityScore, Location location){
+    public Optional<Event> saveOrUpdate(String name, String description, double popularityScore, Location location, Category category){
 
         DataHolder.eventList.removeIf(event -> event.getName().equals(name));
-        Event event = new Event(name, description, popularityScore, location);
+        Event event = new Event(name, description, popularityScore, location,category);
         DataHolder.eventList.add(event);
         return Optional.of(event);
     }

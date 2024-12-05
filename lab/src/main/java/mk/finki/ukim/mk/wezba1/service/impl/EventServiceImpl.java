@@ -1,9 +1,11 @@
 package mk.finki.ukim.mk.wezba1.service.impl;
 
 import jakarta.transaction.Transactional;
+import mk.finki.ukim.mk.wezba1.model.Category;
 import mk.finki.ukim.mk.wezba1.model.Event;
 import mk.finki.ukim.mk.wezba1.model.Location;
 import mk.finki.ukim.mk.wezba1.model.exception.EventTextExceptions;
+import mk.finki.ukim.mk.wezba1.repository.jpa.CategoryRepository;
 import mk.finki.ukim.mk.wezba1.repository.jpa.EventRepository;
 import mk.finki.ukim.mk.wezba1.repository.jpa.LocationRepository;
 import mk.finki.ukim.mk.wezba1.service.EventService;
@@ -17,10 +19,13 @@ import java.util.Optional;
 public class EventServiceImpl implements EventService {
     private final EventRepository inMemoryEventRepository;
     private final LocationRepository inMemoryLocationRepository;
+    private final CategoryRepository inMemoryCategoryRepository;
 
-    public EventServiceImpl(EventRepository inMemoryEventRepository, LocationRepository inMemoryLocationRepository) {
+    public EventServiceImpl(EventRepository inMemoryEventRepository, LocationRepository inMemoryLocationRepository, CategoryRepository inMemoryCategoryRepository) {
         this.inMemoryEventRepository = inMemoryEventRepository;
         this.inMemoryLocationRepository = inMemoryLocationRepository;
+        this.inMemoryCategoryRepository = inMemoryCategoryRepository;
+
     }
 
     @Override
@@ -57,23 +62,31 @@ public class EventServiceImpl implements EventService {
         inMemoryEventRepository.deleteById(id);
     }
 
+
+
     @Transactional
     @Override
-    public Optional<Event> save(String name, String description, double popularityScore, Long locationid) {
+    public Optional<Event> save(String name, String description, double popularityScore, Long locationid,Long categoryid) {
        Location location = inMemoryLocationRepository.findById(locationid).orElse(null);
-       Event event = new Event(name, description, popularityScore, location);
+        Category category = inMemoryCategoryRepository.findById(categoryid).orElse(null);
+       Event event = new Event(name, description, popularityScore, location,category);
        return Optional.of(inMemoryEventRepository.save(event));
     }
 
     @Override
-    public Optional<Event> update(Long id, String name, String description, double popularityScore, Long locationid) {
+    public Optional<Event> update(Long id, String name, String description, double popularityScore, Long locationid,Long categoryid) {
         Event event = inMemoryEventRepository.findById(id).orElse(null);
         event.setName(name);
         event.setDescription(description);
         event.setPopularityScore(popularityScore);
 
         Location location = inMemoryLocationRepository.findById(locationid).orElse(null);
+        Category category = inMemoryCategoryRepository.findById(categoryid).orElse(null);
         event.setLocation(location);
+        event.setCategory(category);
+
+
+
 
         return Optional.of(inMemoryEventRepository.save(event));
     }

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.List;
+
 @Data
 @Entity
 public class Event {
@@ -22,11 +24,21 @@ public class Event {
     Location location;
 
 
-    public Event(String name, String description, double popularityScore, Location location) {
+    @ManyToOne
+    Category category;
+
+
+    @OneToOne(mappedBy = "event")
+
+    EventBooking eventBooking;
+
+    public Event(String name, String description, double popularityScore, Location location, Category category) {
         this.name = name;
         this.description = description;
         this.popularityScore = popularityScore;
         this.location = location;
+        this.category = category;
+
     }
 
     public Event() {

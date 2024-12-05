@@ -32,6 +32,7 @@ public class EventBookingController {
     @PostMapping("/eventBooking")
     public String booking(@RequestParam String eventName,
                           @RequestParam(required = false) Long numTickets,
+
                           Model model) {
         String name = "Isen Osman";
         String ipAddress = "127.0.0.1";

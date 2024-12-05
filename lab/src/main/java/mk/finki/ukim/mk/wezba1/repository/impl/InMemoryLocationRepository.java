@@ -13,8 +13,6 @@ public class InMemoryLocationRepository {
         return DataHolder.locationList;
     }
 
-    public Optional<Location> findById(Long id){
-        return DataHolder.locationList.stream().filter(l -> l.getId().equals(id)).findFirst();
-    }
+
 
 }

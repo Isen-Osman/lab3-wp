@@ -79,6 +79,19 @@
                         th:text="${location.name}"
                         th:selected="${event != null && event.location != null && event.location.id == location.id}"></option>
             </select>
+
+
+
+        </div>
+        <div class="form-group mb-3">
+            <label for="categoryId">Category</label>
+            <select name="categoryId" class="form-control" id="categoryId">
+                <option value="" disabled selected>Select a category</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.getId()}"
+                        th:text="${category.getName()}"
+                        th:selected="${event != null && event.category != null && event.category.id == category.id}"></option>
+            </select>
         </div>
 
         <!-- button za submit -->
